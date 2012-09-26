@@ -8,6 +8,6 @@ class HeroesController < ApplicationController
 
   private
   def heroes
-    Hero.all
+    Hero.all.sort!{ |x, y| y.player_ids.count <=> x.player_ids.count }
   end
 end

@@ -1,14 +1,18 @@
-%h1 Heroes
+<script type="text/javascript" id="asset-json">
+var hero_usage = #{heroes.map{ |hero| hero.player_ids.count}};
+</script>
 
-%table
-  %thead
-    %tr
-      %th ID
-      %th Name
-      %th Used
-  %tbody
-    -heroes.each do |hero|
-      %tr
-        %td=hero.hero_id
-        %td=hero.name
-        %td=hero.player_ids.count
+-# %h1 Heroes
+-# 
+-# %table
+-#   %thead
+-#     %tr
+-#       %th ID
+-#       %th Name
+-#       %th Used
+-#   %tbody
+-#     -heroes.each do |hero|
+-#       %tr
+-#         %td=hero.hero_id
+-#         %td=hero.name
+-#         %td=hero.player_ids.count
