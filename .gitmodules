@@ -1,0 +1,3 @@
+[submodule "DotaStock.wiki"]
+	path = DotaStock.wiki
+	url = git@github.com:KeysetTS/DotaStock.wiki.git
