@@ -16,3 +16,14 @@ task :get_matches => :environment do
     end
   end
 end
+
+desc "populate hero information"
+task :get_hero_information => :environment do
+  heros_json = DotaAPI.get_heroes
+  heros_json.each do |json_hero|
+    hero = Hero.find_or_create_by_hero_id(json_hero['id'])
+    ap hero
+    hero.name = json_hero['localized_name']
+    hero.save
+  end
+end
