@@ -18,3 +18,4 @@ vendor/ruby
 
 bin/
 config/api_config.yml
+config/database.yml

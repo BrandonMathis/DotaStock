@@ -1,0 +1,26 @@
+# development:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: <dbname>
+#   pool: 5
+#   username: <uname>
+#   password:
+#   min_messages: warning
+#
+# test:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: <dbname>
+#   pool: 5
+#   username: <uname>
+#   password:
+#   min_messages: warning
+#
+# production:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: <dbname>
+#   pool: 5
+#   username: <uname>
+#   password:
+#   min_messages: warning
