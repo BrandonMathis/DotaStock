@@ -9,6 +9,6 @@ class HeroesController < ApplicationController
 
   private
   def heroes
-    Hero.all.sort!{ |x, y| y.usage(@matches).count <=> x.usage(@matches).count }
+    Hero.all#.sort!{ |x, y| y.usage(@matches).count <=> x.usage(@matches).count }
   end
 end
