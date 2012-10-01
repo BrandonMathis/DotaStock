@@ -3,11 +3,12 @@ class HeroesController < ApplicationController
   helper_method :heroes
 
   def index
+    @matches = params[:matches] || 100
     respond_with heroes
   end
 
   private
   def heroes
-    Hero.all.sort!{ |x, y| y.player_ids.count <=> x.player_ids.count }
+    Hero.all.sort!{ |x, y| y.usage(@matches).count <=> x.usage(@matches).count }
   end
 end

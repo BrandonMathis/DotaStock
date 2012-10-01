@@ -43,6 +43,16 @@ $ ->
     .attr('text-anchor', 'start')
     .text(String)
 
+  chart.selectAll('text')
+    .data(hero_usage)
+    .enter().append('text')
+    .attr('x', 10)
+    .attr('y', (d, i) -> y(i))
+    .attr('dx',  (d) -> x(d.magnitude) - 5)
+    .attr('dy', 20 - 5)
+    .attr('text-anchor', 'end')
+    .text(String)
+
   chart.selectAll('.rule')
     .data(x.ticks(10))
     .enter().append('text')
