@@ -1,4 +1,13 @@
 $ ->
+  sorted_heroes = _.sortBy(heroes, (hero) -> -hero['usage'])
+  hero_usage = _.map(sorted_heroes, (hero) -> hero['usage'])
+  hero_names = _.map(sorted_heroes, (hero) -> hero['name'])
+
+  total_matches = 0
+  _.each(hero_usage, (usage) ->
+    total_matches += parseInt(usage)
+  )
+
   container_height = hero_usage.length * 20
   container_width = 1000
 
@@ -15,7 +24,7 @@ $ ->
     .attr("width", container_width)
     .attr("height", container_height)
     .append('g')
-    .attr('transform', 'translate(10,15)')
+    .attr('transform', 'translate(25,15)')
 
   chart.selectAll('line')
     .data(x.ticks(10))
@@ -43,10 +52,11 @@ $ ->
     .attr('text-anchor', 'start')
     .text(String)
 
-  chart.selectAll('text')
+  chart.selectAll('text.usage')
     .data(hero_usage)
     .enter().append('text')
-    .attr('x', 10)
+    .attr('class', 'usage')
+    .attr('x', -3)
     .attr('y', (d, i) -> y(i))
     .attr('dx',  (d) -> x(d.magnitude) - 5)
     .attr('dy', 20 - 5)

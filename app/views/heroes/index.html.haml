@@ -1,4 +1,3 @@
 <script type="text/javascript" id="asset-json">
-var hero_usage = #{heroes.map{ |hero| hero.usage(@matches).count }};
-var hero_names = #{raw heroes.map{ |hero| hero.name}};
+var heroes = #{raw @heros_json}
 </script>

@@ -15,6 +15,7 @@ group :assets do
   gem 'd3_rails'
   gem 'haml-rails'
   gem 'zurb-foundation'
+  gem 'underscore-rails'
 end
 
 gem 'jquery-rails'

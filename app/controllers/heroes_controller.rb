@@ -4,11 +4,17 @@ class HeroesController < ApplicationController
 
   def index
     @matches = params[:matches] || 100
+    @heros_json = heroes.map do |hero|
+      {
+        "name" => hero.name,
+        "usage" => hero.usage(params[:matches]).count
+      }
+    end.to_json
     respond_with heroes
   end
 
   private
   def heroes
-    Hero.all#.sort!{ |x, y| y.usage(@matches).count <=> x.usage(@matches).count }
+    Hero.all
   end
 end
