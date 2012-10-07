@@ -26,3 +26,10 @@ task :get_hero_information => :environment do
     hero.save
   end
 end
+
+desc "repopulate hero information" 
+task :reload_hero_information => :environment do
+  Match.delete_all
+  Player.delete_all
+  Rake::Task["get_matches"].execute
+end
