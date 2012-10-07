@@ -1,3 +1,6 @@
 [submodule "DotaStock.wiki"]
 	path = DotaStock.wiki
 	url = git@github.com:KeysetTS/DotaStock.wiki.git
+[submodule "vendor/rickshaw"]
+	path = vendor/rickshaw
+	url = git://github.com/shutterstock/rickshaw.git
