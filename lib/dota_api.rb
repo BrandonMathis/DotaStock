@@ -17,19 +17,19 @@ class DotaAPI
       JSON.parse(make_ssl_request(GET_MATCH_HISTORY).body)
     end
 
-    def get_matches(limit)
-      total_matches = []
-      matches = get_last_25
-      total_matches.concat matches['result']['matches']
-      while(total_matches.count < limit) do
-        last_match_id = total_matches.last['match_id']
-        matches_requested = ((matches_remaining = limit - total_matches.count) >= 25)? {} : {matches_requested: matches_remaining + 1} # must +1 bc get_matches will also return the last_match_id match
-        result = collect_match_starting_at(last_match_id, matches_requested)['result']['matches']
-        collected_match_ids = extract_match_ids(total_matches)
-        result.reject! { |match| collected_match_ids.include? match['match_id'] }
-        total_matches.concat(result)
-      end
-      return total_matches
+    def get_matches(limit, starting_match_id = nil)
+      return [] if limit <= 0
+      opts = (limit < 25)? {matches_requested: limit} : {}
+      opts.merge!({start_at_match_id: starting_match_id}) if starting_match_id
+      
+      matches = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
+      matches = HashWithIndifferentAccess.new(matches)[:result][:matches]
+      matches = matches.uniq{|match| match[:match_id]}
+
+      limit  -= matches.count
+      starting_match_id = matches.last[:match_id]
+
+      matches.concat get_matches(limit, starting_match_id)
     end
 
     #add params and key using something in net http

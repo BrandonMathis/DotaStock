@@ -1,8 +1,8 @@
 require Rails.root.join 'lib', 'dota_api'
 
 desc "get last 25 matches"
-task :get_matches => :environment do
-  result = DotaAPI.get_matches(100)
+task :get_matches, [:matches] => [:environment] do |t, args|
+  result = DotaAPI.get_matches(args[:matches].to_i)
   ap DotaAPI.extract_match_ids(result)
 
   result.each do |json_match|
