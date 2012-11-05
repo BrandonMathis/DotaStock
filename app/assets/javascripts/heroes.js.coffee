@@ -1,5 +1,9 @@
 $ ->
-  sorted_heroes = _.sortBy(heroes, (hero) -> -hero['usage'])
+  if sort == 'DESC'
+    sorted_heroes = _.sortBy(heroes, (hero) -> -hero['usage'])
+  else if sort == 'ASC'
+    sorted_heroes = _.sortBy(heroes, (hero) -> hero['usage'])
+
   hero_usage = _.map(sorted_heroes, (hero) -> hero['usage'])
   hero_names = _.map(sorted_heroes, (hero) -> hero['name'])
 
@@ -22,7 +26,7 @@ $ ->
   chart = d3.select("body").append("svg")
     .attr("class", "chart")
     .attr("width", container_width)
-    .attr("height", container_height)
+    .attr("height", container_height + 20)
     .append('g')
     .attr('transform', 'translate(25,15)')
 
