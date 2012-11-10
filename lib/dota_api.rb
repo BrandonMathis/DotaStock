@@ -9,26 +9,19 @@ class DotaAPI
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
-    def collect_match_starting_at(match_id, opts = nil)
-      json = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, {start_at_match_id: match_id}.merge(opts)).body)
-    end
-
-    def get_last_25
-      JSON.parse(make_ssl_request(GET_MATCH_HISTORY).body)
-    end
-
     def get_matches(limit, starting_match_id = nil)
       return [] if limit <= 0
+
       opts = (limit < 25)? {matches_requested: limit} : {}
       opts.merge!({start_at_match_id: starting_match_id}) if starting_match_id
-      
       matches = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
       matches = HashWithIndifferentAccess.new(matches)[:result][:matches]
-      matches = matches.uniq{|match| match[:match_id]}
 
-      limit  -= matches.count
+      return matches if matches.last[:match_id] == starting_match_id
+
+      limit -= matches.count
       starting_match_id = matches.last[:match_id]
-
+      matches.remove(match_id: starting_match_id)
       matches.concat get_matches(limit, starting_match_id)
     end
 
