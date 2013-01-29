@@ -1,13 +1,13 @@
 require Rails.root.join 'lib', 'dota_api'
 
 desc "get last 25 matches"
-task :get_matches, [:matches] => [:environment] do |t, args|
-  result = DotaAPI.get_matches(args[:matches].to_i)
+task :get_old_matches, [:matches] => [:environment] do |t, args|
+  result = DotaAPI.get_matches(limit: args[:matches].to_i, starting_match_id: Match.order("match_id").first.match_id)
   ap DotaAPI.extract_match_ids(result)
   save_matches(result)
 end
 
-task :get_matches_till => [:environment] do |t, args|
+task :get_new_matches => [:environment] do |t, args|
   last_match = Match.order("match_id").last.match_id
   ap "Collecting Matches Till #{last_match}"
   result = DotaAPI.get_matches(ending_match_id: last_match)
