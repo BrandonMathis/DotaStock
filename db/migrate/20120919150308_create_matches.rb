@@ -1,7 +1,7 @@
 class CreateMatches < ActiveRecord::Migration
   def change
     create_table :matches do |t|
-      t.integer :match_id
+      t.string :match_id
 
       t.timestamps
     end

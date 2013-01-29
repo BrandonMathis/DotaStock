@@ -14,20 +14,20 @@
 ActiveRecord::Schema.define(:version => 20120919150436) do
 
   create_table "heros", :force => true do |t|
-    t.integer  "hero_id"
+    t.string   "hero_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "matches", :force => true do |t|
-    t.integer  "match_id"
+    t.string   "match_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "players", :force => true do |t|
-    t.integer  "account_id"
+    t.string   "account_id"
     t.integer  "hero_id"
     t.integer  "match_id"
     t.datetime "created_at", :null => false

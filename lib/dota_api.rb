@@ -4,25 +4,45 @@ require 'yaml'
 
 class DotaAPI
   KEY = YAML.load(File.read(Rails.root.join('config', 'api_config.yml')))['key']
+  GET_MATCH_HISTORY = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/"
   # GET_MATCH_HISTORY = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/"
-  GET_MATCH_HISTORY = "https://api.steampowered.com/IDOTA2Match_205790/GetMatchHistory/V001/"
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
-    def get_matches(limit, starting_match_id = nil)
-      return [] if limit <= 0
+    def get_matches(args = {})
+      opts = {}
 
-      opts = (limit < 25)? {matches_requested: limit} : {}
-      opts.merge!({start_at_match_id: starting_match_id}) if starting_match_id
-      matches = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
-      matches = HashWithIndifferentAccess.new(matches)[:result][:matches]
+      if limit = args[:limit]
+        return [] if limit <= 0
+        opts.merge!({matches_requested: limit}) if limit < 25
+      end
+
+      if starting_match_id = args[:starting_match_id]
+        opts.merge!({start_at_match_id: starting_match_id})
+      end
+
+      matches = get_match_history(opts)
+
+      if ending_match = args[:ending_match_id]
+        prune = false
+        matches.delete_if do |match|
+          prune = true if match[:match_id].to_s == ending_match
+          prune
+        end
+        return matches if prune
+      end
 
       return matches if matches.last[:match_id] == starting_match_id
 
-      limit -= matches.count
       starting_match_id = matches.last[:match_id]
-      matches.remove(match_id: starting_match_id)
-      matches.concat get_matches(limit, starting_match_id)
+      matches.reject!{ |x| x[:match_id] == starting_match_id }
+      limit -= matches.count if limit
+      matches.concat get_matches(limit: limit, starting_match_id: starting_match_id, ending_match_id: ending_match)
+    end
+
+    def get_match_history(opts = {})
+      result = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
+      HashWithIndifferentAccess.new(result)[:result][:matches]
     end
 
     #add params and key using something in net http
