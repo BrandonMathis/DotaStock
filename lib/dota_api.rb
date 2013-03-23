@@ -9,11 +9,11 @@ class DotaAPI
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
-    def get_matches(limit = 25)
+    def get_matches(limit = 25, start_at_match_id = nil)
       return [] if limit <= 0
-      matches = get_match_history(matches_requested: limit)
+      matches = get_match_history(matches_requested: limit, start_at_match_id: start_at_match_id)
       limit -= matches.count if limit
-      matches.concat get_matches(limit)
+      matches.concat get_matches(limit, matches.last["match_id"])
     end
 
     def get_matches_till(last_saved_match_id, start_at_match_id = nil)
