@@ -39,9 +39,17 @@ def save_matches(json)
     match = Match.create(match_id: json_match['match_id'])
     next if match.invalid?
     json_match['players'].each do |json_player|
-      player = match.players.create(account_id: json_player['account_id'])
-      player.hero = Hero.find_or_create_by_hero_id(json_player['hero_id'].to_s)
+      player = Player.find_or_create_by_account_id(account_id: json_player['account_id'].to_s)
+      unless hero = Hero.find_by_hero_id(json_player['hero_id'].to_s)
+        Rake::Task["get_hero_information"].execute
+        hero = Hero.find_by_hero_id(json_player['hero_id'].to_s)
+      end
+      hero.matches << match
+      match.players << player
+      player.heros << hero
       player.save
+      hero.save
+      match.save
     end
   end
 end

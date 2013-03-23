@@ -8,7 +8,7 @@ class HeroesController < ApplicationController
     @heros_json = heroes.map do |hero|
       {
         name:  hero.name,
-        usage: hero.usage(params[:matches]).count,
+        usage: hero.matches.count,
       }
     end.to_json
     respond_with heroes
