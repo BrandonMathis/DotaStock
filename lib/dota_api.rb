@@ -9,35 +9,22 @@ class DotaAPI
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
-    def get_matches(args = {})
-      opts = {}
-
-      if limit = args[:limit]
-        return [] if limit <= 0
-        opts.merge!({matches_requested: limit}) if limit < 25
-      end
-
-      if starting_match_id = args[:starting_match_id]
-        opts.merge!({start_at_match_id: starting_match_id})
-      end
-
-      matches = get_match_history(opts)
-
-      if ending_match = args[:ending_match_id]
-        prune = false
-        matches.delete_if do |match|
-          prune = true if match[:match_id].to_s == ending_match
-          prune
-        end
-        return matches if prune
-      end
-
-      return matches if matches.last[:match_id] == starting_match_id
-
-      starting_match_id = matches.last[:match_id]
-      matches.reject!{ |x| x[:match_id] == starting_match_id }
+    def get_matches(limit = 25)
+      return [] if limit <= 0
+      matches = get_match_history(matches_requested: limit)
       limit -= matches.count if limit
-      matches.concat get_matches(limit: limit, starting_match_id: starting_match_id, ending_match_id: ending_match)
+      matches.concat get_matches(limit)
+    end
+
+    def get_matches_till(last_saved_match_id, start_at_match_id = nil)
+      matches = get_match_history(start_at_match_id: start_at_match_id)
+      prune = false
+      matches.delete_if do |match|
+        prune = true if match[:match_id].to_s == last_saved_match_id
+        prune
+      end
+      return matches if prune
+      return matches.concat get_matches_till(last_saved_match_id, matches.last["match_id"])
     end
 
     def get_match_history(opts = {})
