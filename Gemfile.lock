@@ -177,6 +177,7 @@ DEPENDENCIES
   d3_rails
   haml-rails
   jquery-rails
+  libv8 (= 3.3.10.4)
   pg
   rails (= 3.2.8)
   rspec-rails
