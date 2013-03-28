@@ -27,4 +27,5 @@ end
 group :development do
   gem 'awesome_print'
   gem 'yaml_db'
+  gem 'capistrano'
 end
