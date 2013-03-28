@@ -5,6 +5,8 @@ set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 }
 
+
+
 set :application, "DotaStock"
 set :repository,  "git://github.com/BrandonMathis/St-Marks.git"
 set :use_sudo, false
@@ -17,7 +19,7 @@ role :app, "brandonmathis.me"                          # This may be the same as
 role :db,  "brandonmathis.me", :primary => true # This is where Rails migrations will run
 
 set :user, "bemathis"
-set :ssh_options, { :forward_agent => true }
+set :ssh_options, { :port => 44, :forward_agent => true }
 
 default_run_options[:pty] = true
 
