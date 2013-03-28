@@ -11,7 +11,6 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer', :platforms => :ruby
-  gem 'libv8', '3.3.10.4'
   gem 'uglifier', '>= 1.0.3'
   gem 'd3_rails'
   gem 'haml-rails'
