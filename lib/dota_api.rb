@@ -9,6 +9,10 @@ class DotaAPI
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
+    def get_tiny_hero_porterate(name)
+      "http://media.steampowered.com/apps/dota2/images/heroes/#{name}_eg.png"
+    end
+
     def get_match_history(opts = {})
       result = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
       HashWithIndifferentAccess.new(result)

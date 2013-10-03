@@ -7,7 +7,7 @@ class HeroesController < ApplicationController
     @sort = params[:sort] || "DESC"
     @heros_json = heroes.map do |hero|
       {
-        name:  hero.name,
+        name:  hero.localized_name,
         usage: hero.matches.count,
       }
     end.to_json
