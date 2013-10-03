@@ -35,11 +35,13 @@ set(:current_branch) { `git branch`.match(/\* (\S+)\s/m)[1] || raise("Couldn't d
 set :branch, defer { current_branch }
 
 after 'deploy:finalize_update', 'deploy:make_links'
+after "deploy:update_code", "deploy:migrate"
 
 namespace :deploy do
   desc 'Symlinks the database.yml'
   task :make_links, roles: :app do
     run "ln -nfs #{shared_path}/database.yml #{release_path}/config/database.yml"
+    run "ln -nfs #{shared_path}/api_config.yml #{release_path}/config/api_config.yml"
   end
 end
 
