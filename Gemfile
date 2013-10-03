@@ -6,6 +6,9 @@ gem 'sqlite3'
 gem 'thin'
 gem 'pg'
 gem 'awesome_print'
+gem 'delayed_job'
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 group :assets do
   gem 'compass-rails'
