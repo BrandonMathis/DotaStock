@@ -10,6 +10,7 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'haml'
+gem 'unicorn'
 
 group :assets do
   gem 'compass-rails'

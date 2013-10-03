@@ -32,10 +32,8 @@ set :scm_verbose, true
 set(:current_branch) { `git branch`.match(/\* (\S+)\s/m)[1] || raise("Couldn't determine current branch") }
 set :branch, defer { current_branch }
 
-before 'deploy', 'deploy:stop_collector'
 after 'deploy:finalize_update', 'deploy:make_links'
 after "deploy:update_code", "deploy:migrate"
-after 'deploy', 'deploy:start_collector'
 
 namespace :deploy do
   desc 'Symlinks the database.yml'
@@ -45,15 +43,15 @@ namespace :deploy do
   end
 
   task :get_hero_information do
-    run("cd #{deploy_to}/current && /usr/bin/env rake get_hero_information RAILS_ENV=production")
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake get_hero_information RAILS_ENV=production")
   end
 
   task :start_collector do
-    run("cd #{deploy_to}/current && /usr/bin/env rake start_collector RAILS_ENV=production")
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake start_collector RAILS_ENV=production")
   end
 
   task :stop_collector do
-    run("cd #{deploy_to}/current && /usr/bin/env rake stop_collector RAILS_ENV=production")
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake stop_collector RAILS_ENV=production")
   end
 end
 
@@ -65,20 +63,20 @@ set :unicorn_config, "#{current_path}/config/unicorn.rb"
 set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 
 namespace :deploy do
-  # task :start, :roles => :app, :except => { :no_release => true } do 
-  #   run "cd #{current_path} && #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
-  # end
-  # task :stop, :roles => :app, :except => { :no_release => true } do 
-  #   run "kill `cat #{unicorn_pid}`"
-  # end
-  # task :graceful_stop, :roles => :app, :except => { :no_release => true } do
-  #   run "kill -s QUIT `cat #{unicorn_pid}`"
-  # end
-  # task :reload, :roles => :app, :except => { :no_release => true } do
-  #   run "kill -s USR2 `cat #{unicorn_pid}`"
-  # end
-  # task :restart, :roles => :app, :except => { :no_release => true } do
-  #   stop
-  #   start
-  # end
+  task :start, :roles => :app, :except => { :no_release => true } do 
+    run "cd #{current_path} && #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
+  end
+  task :stop, :roles => :app, :except => { :no_release => true } do 
+    run "kill `cat #{unicorn_pid}`"
+  end
+  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
+    run "kill -s QUIT `cat #{unicorn_pid}`"
+  end
+  task :reload, :roles => :app, :except => { :no_release => true } do
+    run "kill -s USR2 `cat #{unicorn_pid}`"
+  end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    stop
+    start
+  end
 end
