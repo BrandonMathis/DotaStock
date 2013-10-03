@@ -11,40 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130323170203) do
-
-  create_table "hero_matches", :force => true do |t|
-    t.integer  "hero_id"
-    t.integer  "match_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+ActiveRecord::Schema.define(:version => 20131003161841) do
 
   create_table "heros", :force => true do |t|
-    t.string   "hero_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "hero_id"
   end
 
   create_table "matches", :force => true do |t|
     t.string   "match_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "player_heros", :force => true do |t|
-    t.integer  "player_id"
-    t.integer  "hero_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "match_seq_num"
+    t.datetime "start_time"
+    t.integer  "lobby_type"
   end
 
   create_table "player_matches", :force => true do |t|
     t.integer  "match_id"
     t.integer  "player_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "player_slot"
+    t.integer  "hero_id"
   end
 
   create_table "players", :force => true do |t|

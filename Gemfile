@@ -5,6 +5,7 @@ gem 'rails'
 gem 'sqlite3'
 gem 'thin'
 gem 'pg'
+gem 'awesome_print'
 
 group :assets do
   gem 'compass-rails'
@@ -23,7 +24,6 @@ group :test do
 end
 
 group :development do
-  gem 'awesome_print'
   gem 'yaml_db'
   gem 'capistrano'
 end

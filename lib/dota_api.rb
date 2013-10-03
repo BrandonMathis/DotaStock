@@ -9,27 +9,9 @@ class DotaAPI
   GET_HEROES = "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/"
 
   class << self
-    def get_matches(limit = 25, start_at_match_id = nil)
-      return [] if limit <= 0
-      matches = get_match_history(matches_requested: limit, start_at_match_id: start_at_match_id)
-      limit -= matches.count if limit
-      matches.concat get_matches(limit, matches.last["match_id"])
-    end
-
-    def get_matches_till(last_saved_match_id, start_at_match_id = nil)
-      matches = get_match_history(start_at_match_id: start_at_match_id)
-      prune = false
-      matches.delete_if do |match|
-        prune = true if match[:match_id].to_s == last_saved_match_id
-        prune
-      end
-      return matches if prune
-      return matches.concat get_matches_till(last_saved_match_id, matches.last["match_id"])
-    end
-
     def get_match_history(opts = {})
       result = JSON.parse(make_ssl_request(GET_MATCH_HISTORY, opts).body)
-      HashWithIndifferentAccess.new(result)[:result][:matches]
+      HashWithIndifferentAccess.new(result)
     end
 
     #add params and key using something in net http
@@ -51,10 +33,6 @@ class DotaAPI
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
       response = http.request(request)
-    end
-
-    def extract_match_ids(matches)
-      match_ids = matches.map { |match| match['match_id'] }
     end
 
     def get_heroes

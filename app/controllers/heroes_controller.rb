@@ -16,6 +16,6 @@ class HeroesController < ApplicationController
 
   private
   def heroes
-    Hero.all
+    Hero.all - Hero.where(hero_id: 0)
   end
 end
