@@ -5,8 +5,6 @@ set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 }
 
-
-
 set :application, 'DotaStock'
 set :repository,  'git://github.com/BrandonMathis/DotaStock.git'
 set :use_sudo, false
@@ -34,14 +32,28 @@ set :scm_verbose, true
 set(:current_branch) { `git branch`.match(/\* (\S+)\s/m)[1] || raise("Couldn't determine current branch") }
 set :branch, defer { current_branch }
 
+before 'deploy', 'deploy:stop_collector'
 after 'deploy:finalize_update', 'deploy:make_links'
 after "deploy:update_code", "deploy:migrate"
+after 'deploy', 'deploy:start_collector'
 
 namespace :deploy do
   desc 'Symlinks the database.yml'
   task :make_links, roles: :app do
     run "ln -nfs #{shared_path}/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/api_config.yml #{release_path}/config/api_config.yml"
+  end
+
+  task :get_hero_information do
+    run("cd #{deploy_to}/current && /usr/bin/env rake get_hero_information RAILS_ENV=production")
+  end
+
+  task :start_collector do
+    run("cd #{deploy_to}/current && /usr/bin/env rake start_collector RAILS_ENV=production")
+  end
+
+  task :stop_collector do
+    run("cd #{deploy_to}/current && /usr/bin/env rake stop_collector RAILS_ENV=production")
   end
 end
 

@@ -25,10 +25,11 @@ task :get_hero_information => :environment do
   end
 end
 
-desc "repopulate hero information" 
-task :reload_hero_information => :environment do
-  Match.delete_all
-  Player.delete_all
-  Rake::Task["get_matches"].execute
+task :start_collector => :environment do
+  Collector.start
+  %x[script/delayed_job start]
 end
 
+task :stop_collector do
+  %x[script/delayed_job stop]
+end

@@ -9,6 +9,7 @@ gem 'awesome_print'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'haml'
 
 group :assets do
   gem 'compass-rails'
@@ -16,7 +17,6 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'd3_rails'
-  gem 'haml-rails'
   gem 'underscore-rails'
 end
 
