@@ -7,17 +7,20 @@ $ ->
   hero_usage = _.map(sorted_heroes, (hero) -> hero['usage'])
   hero_names = _.map(sorted_heroes, (hero) -> hero['name'])
 
+  chart_padding_x = 25
+  chart_padding_y = 15
+
   total_matches = 0
   _.each(hero_usage, (usage) ->
     total_matches += parseInt(usage)
   )
 
-  container_height = hero_usage.length * 20
+  container_height = hero_usage.length * 25
   container_width = 1000
 
   x = d3.scale.linear()
     .domain([0, d3.max(hero_usage)])
-    .range([0,container_width - 10])
+    .range([0,container_width - chart_padding_x])
 
   y = d3.scale.linear()
     .domain([0, hero_usage.length])
@@ -28,16 +31,8 @@ $ ->
     .attr("width", container_width)
     .attr("height", container_height + 20)
     .append('g')
-    .attr('transform', 'translate(25,15)')
+    .attr('transform', "translate(#{chart_padding_x},#{chart_padding_y})")
 
-  chart.selectAll('line')
-    .data(x.ticks(10))
-    .enter().append('line')
-    .attr('x1', x)
-    .attr('x2', x)
-    .attr('y1', 0)
-    .attr('y2', container_height)
-    .style('stroke', '#ccc')
 
   chart.selectAll("rect")
     .data(hero_usage)

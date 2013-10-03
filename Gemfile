@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails'
 
 gem 'sqlite3'
 gem 'thin'
@@ -13,7 +13,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'd3_rails'
   gem 'haml-rails'
-  gem 'zurb-foundation'
   gem 'underscore-rails'
 end
 
