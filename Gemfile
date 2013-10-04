@@ -9,7 +9,7 @@ gem 'awesome_print'
 gem 'daemons'
 gem 'haml'
 gem 'unicorn'
-gem 'whenever'
+gem 'whenever', :require => false
 
 group :assets do
   gem 'compass-rails'
