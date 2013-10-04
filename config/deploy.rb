@@ -1,7 +1,7 @@
 load 'deploy/assets'
 require 'bundler/capistrano'
-set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
+set :whenever_command, "bundle exec whenever"
 
 set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
