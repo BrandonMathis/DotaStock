@@ -1,5 +1,7 @@
 load 'deploy/assets'
 require 'bundler/capistrano'
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
 
 set :default_environment, {
   'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
@@ -44,18 +46,6 @@ namespace :deploy do
 
   task :get_hero_information do
     run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake get_hero_information RAILS_ENV=production")
-  end
-
-  task :start_collector do
-    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake start_collector RAILS_ENV=production")
-  end
-
-  task :stop_collector do
-    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake stop_collector RAILS_ENV=production")
-  end
-
-  task :restart_collector do
-    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake restart_collector RAILS_ENV=production")
   end
 end
 

@@ -1,20 +1,6 @@
 require Rails.root.join 'lib', 'dota_api'
 
 class Collector
-  def collect_matches
-    if Match.count.zero?
-      Collector.get_matches(500)
-    else
-      last_match = Match.order("match_id").last.match_id
-      Collector.get_matches_till(last_match)
-    end
-    self.delay(:run_at => 15.minutes.from_now).collect_matches
-  end
-
-  def self.start
-    new.collect_matches
-  end
-
   def self.get_matches_till(last_saved_match_id, start_at_match_id = nil)
     result = DotaAPI.get_match_history(start_at_match_id: start_at_match_id)
     matches = result[:result][:matches]
