@@ -53,6 +53,10 @@ namespace :deploy do
   task :stop_collector do
     run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake stop_collector RAILS_ENV=production")
   end
+
+  task :restart_collector do
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake restart_collector RAILS_ENV=production")
+  end
 end
 
 after "deploy:restart", "deploy:cleanup"

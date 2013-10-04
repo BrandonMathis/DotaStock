@@ -26,10 +26,23 @@ task :get_hero_information => :environment do
 end
 
 task :start_collector => :environment do
+  start_collector
+end
+
+task :stop_collector do
+  stop_collector
+end
+
+task :restart_collector => :environment do
+  stop_collector
+  start_collector
+end
+
+def start_collector
   Collector.start
   %x[script/delayed_job start]
 end
 
-task :stop_collector do
+def stop_collector
   %x[script/delayed_job stop]
 end
