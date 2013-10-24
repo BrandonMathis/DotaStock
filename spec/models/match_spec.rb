@@ -17,5 +17,12 @@ describe Match do
     it 'will track hero usage' do
       Hero.last.matches.count.should == 1
     end
+
+    context 'with duplicate players' do
+      let(:json) { JSON.parse(Rails.root.join('spec', 'fixtures', 'package.json').read) }
+      it 'will not create duplicate players' do
+        Player.all.map(&:account_id).uniq.length.should == Player.count
+      end
+    end
   end
 end
