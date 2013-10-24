@@ -14,6 +14,11 @@ class HeroesController < ApplicationController
     respond_with heroes
   end
 
+  def show
+    @hero = Hero.find(params[:id])
+    respond_with @hero
+  end
+
   private
   def heroes
     Hero.all - Hero.where(hero_id: 0)
